@@ -1,9 +1,9 @@
 # ProyectosAdrian
-# Descripción del Proyecto
+## Descripción del Proyecto 1
 
 Este repositorio contiene un pequeño proyecto diseñado para gestionar las asignaciones de tareas semanales y facilitar la comunicación a través del correo electrónico.
 
-## Contenido del Repositorio
+### Contenido del Repositorio
 
 - **ProgramacionTareasAdrian.js**: Este archivo contiene un programa en JavaScript que se encarga de la asignación de tareas específicas a Adrián.
 
