@@ -27,7 +27,7 @@ dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
 // Dias de cada mes 'Enero':31,'Febrero':29,'Marzo':31,'Abril':30,'Mayo':31,'Junio':30,'Julio':31,'Agosto':31,'Septiembre':30,'Octubre':31,'Noviembre':30,'Diciembre':31
 meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 todasTareasBimensuales=['Limpiar Cristales'];
-tareasSemanales= ['Ordenar Casa (Modo Elsa)','Limpiar Baño Arriba','Limpiar Baño Abajo','Barrer Porche','Limpiar Comedero y Bebedero','Colada (Común)','Mudar Cama (Común)'];
+tareasSemanales= ['Ordenar Casa','Limpiar Baño Arriba','Limpiar Baño Abajo','Barrer Porche','Limpiar Comedero y Bebedero','Colada (Común)','Mudar Cama (Común)'];
 todasTareasQuincenales = ['Poner Conga arriba','Nevera'];
 todasTareasMensuales=['FregarSuelos(Comun)'];
 todasTareasAnuales=['Parrilla','Limpieza Paneles', 'Revision Congelador'];
