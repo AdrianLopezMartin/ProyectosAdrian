@@ -26,10 +26,10 @@ var tareasSemestrales=[];
 dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
 // Dias de cada mes 'Enero':31,'Febrero':29,'Marzo':31,'Abril':30,'Mayo':31,'Junio':30,'Julio':31,'Agosto':31,'Septiembre':30,'Octubre':31,'Noviembre':30,'Diciembre':31
 meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-todasTareasBimensuales=['Limpiar Cristales'];
-tareasSemanales= ['Ordenar Casa','Limpiar Baño Arriba','Limpiar Baño Abajo','Barrer Porche','Limpiar Comedero y Bebedero','Colada (Común)','Mudar Cama (Común)'];
+todasTareasBimensuales=['Limpiar Cristales','Limpiar Coche'];
+tareasSemanales= ['Ordenar Casa (Modo Elsa)','Limpiar Baño Arriba','Limpiar Baño Abajo','Barrer Porche','Limpiar Comedero y Bebedero','Colada (Común)','Mudar Cama (Común)'];
 todasTareasQuincenales = ['Poner Conga arriba','Nevera'];
-todasTareasMensuales=['FregarSuelos(Comun)'];
+todasTareasMensuales=['Limpiar Microondas','Limpiar Horno','FregarSuelos(Comun)','Limpiar escalera (Comun)'];
 todasTareasAnuales=['Parrilla','Limpieza Paneles', 'Revision Congelador'];
 todasTareasSemestrales=['Ordenar Armarios','Limpieza Cocina a Fondo', 'Despensa','Revision Medicamentos', 'Cortinas'];
 
@@ -41,37 +41,40 @@ if(numero % 2 == 0 && ['Octubre','Enero','Marzo','Junio','Julio','Septiembre'].i
     if( numero<=15 && ['Febrero','Abril','Junio','Agosto','Octubre','Diciembre'].includes(meses[mes])){tareasBimensuales=todasTareasBimensuales}
 
 }
-// Asignacion Tareas Mensuales
+// Asignacion Tareas primera Quincena
 else if(numero<=15 ){
     // Aignación Resto tareas
     if ( ['Febrero', 'Abril', 'Junio', 'Agosto', 'Octubre', 'Diciembre'].includes(meses[mes])) { tareasBimensuales = todasTareasBimensuales }
+    else{tareasBimensuales=[todasTareasBimensuales[1]]}
     if ('Noviembre'==meses[mes]){
         tareasSemestrales=[todasTareasSemestrales[0],todasTareasSemestrales[4]];
-        tareasAnuales= todasTareasAnuales[2]
+        tareasAnuales= [todasTareasAnuales[2]]
     }
     if ('Diciembre'== meses[mes] ){
-        tareasSemestrales=todasTareasSemestrales[2]
+        tareasSemestrales=[todasTareasSemestrales[2]]
     }
     if ('Enero'== meses[mes] ){
-        tareasSemestrales=todasTareasSemestrales[3]
+        tareasSemestrales=[todasTareasSemestrales[3]]
     }
     if ('Abril'== meses[mes] ){
         tareasSemestrales=[todasTareasSemestrales[0]]
     if ('Marzo'== meses[mes] ){
-        tareasAnuales=todasTareasAnuales[0]
+        tareasAnuales=[todasTareasAnuales[0]]
     }
     if ('Junio'== meses[mes] ){
-        tareasAnuales=todasTareasAnuales[1]
+        tareasAnuales=[todasTareasAnuales[1]]
         tareasSemestrales=[todasTareasSemestrales[2],todasTareasSemestrales[4]]
     }
     }
-    tareasMensuales=todasTareasMensuales.slice(0,2)}
+    tareasMensuales=[todasTareasMensuales.slice(0,2),todasTareasMensuales[3]]}
+
+// Asignacion de tareas mensuales 2 Quincena
 else if(numero>15){
-    tareasMensuales=todasTareasMensuales[3]
+    tareasMensuales=todasTareasMensuales[0]
     if ('Abril'== meses[mes] ){
         tareasSemestrales=[todasTareasSemestrales[1]]}
     if ('Noviembre'==meses[mes]){
-        tareasSemestrales=todasTareasSemestrales[1]}   
+        tareasSemestrales=[todasTareasSemestrales[1]]}   
 }
 ////////////////////////////HTML CORREO//////////////////////////////
 
