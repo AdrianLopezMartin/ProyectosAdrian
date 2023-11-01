@@ -1,4 +1,4 @@
-# Proyecto 2 
+# Descripcion del Proyecto 2 
 ## Objetivo
 ### El objetivo de este proyecto es extraer una serie de comentarios de una entrada de Facebook con el fin de realizar un sorteo
 ## Documentos
