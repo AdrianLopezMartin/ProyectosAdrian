@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 import time
 
 # Ruta al controlador del navegador (ejemplo para Chrome)
-driver_path = 'C:\\Users\\pispa\\chromedriver_win32\\chromedriver.exe'  # Cambia esto a la ruta de tu controlador
+driver_path = 'C:\\Users\\adrian\\chromedriver_win32\\chromedriver.exe'  # Cambia esto a la ruta de tu controlador
 
 # Configura las opciones del controlador
 chrome_options = webdriver.ChromeOptions()
