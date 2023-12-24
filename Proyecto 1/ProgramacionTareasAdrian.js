@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Code added here will be run once
 // whenever the node is started.
 
@@ -8,8 +9,7 @@ var marcaDeTiempo = new Date(msg.payload);
 var numero = marcaDeTiempo.getDate();
 var mes = marcaDeTiempo.getMonth();
 var dia = marcaDeTiempo.getDay();
-var meses = [];
-var dias = [];
+var meses=[];
 var tareasSemanales = [];
 var tareasMensuales = [];
 var tareasQuincenales = [];
@@ -21,66 +21,396 @@ var todasTareasAnuales = [];
 var todasTareasBimensuales=[];
 var todasTareasSemestrales=[];
 var tareasSemestrales=[];
- 
-/////////////////////////////////////////////////////
-dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-// Dias de cada mes 'Enero':31,'Febrero':29,'Marzo':31,'Abril':30,'Mayo':31,'Junio':30,'Julio':31,'Agosto':31,'Septiembre':30,'Octubre':31,'Noviembre':30,'Diciembre':31
-meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-todasTareasBimensuales=['Limpiar Cristales','Limpiar Coche'];
+// Asigno el mes y dia de la semana en formato String
+mes=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'][mes];
+dia=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'][dia];
+
+// Creamos un calendario con los dias de cada mes
+meses={'Enero':31,'Febrero':29,'Marzo':31,'Abril':30,'Mayo':31,'Junio':30,'Julio':31,'Agosto':31,'Septiembre':30,'Octubre':31,'Noviembre':30,'Diciembre':31}
+
+//Guardo todas nuestras tareas Semanales,Quincenales,Mensuales,Bimensuales y Anuales
+
 tareasSemanales= ['Ordenar Casa (Modo Elsa)','Limpiar Baño Arriba','Limpiar Baño Abajo','Barrer Porche','Limpiar Comedero y Bebedero','Colada (Común)','Mudar Cama (Común)'];
 todasTareasQuincenales = ['Poner Conga arriba','Nevera'];
-todasTareasMensuales=['Limpiar Microondas','Limpiar Horno','FregarSuelos(Comun)','Limpiar escalera (Comun)'];
-todasTareasAnuales=['Parrilla','Limpieza Paneles', 'Revision Congelador'];
-todasTareasSemestrales=['Ordenar Armarios','Limpieza Cocina a Fondo', 'Despensa','Revision Medicamentos', 'Cortinas'];
+todasTareasMensuales=['Limpiar Microondas','Limpiar Horno','FregarSuelos(Comun)','Limpiar escalera (Comun)','Bañar a Chucho'];
+todasTareasBimensuales = ['Limpiar Cristales', 'Limpiar Coche'];
+todasTareasSemestrales = ['Ordenar Armarios', 'Limpieza Cocina a Fondo', 'Despensa', 'Cortinas'];
+todasTareasAnuales = ['Parrilla', 'Limpieza Paneles', 'Revision Congelador', 'Revision Medicamentos'];
+
+
+//                  Asignacion de Semana
+
+    if (numero>0 && numero<=7){var semana =1}
+    else if (numero>7 && numero<=14){var semana = 2}
+    else if (numero>14 && numero <=21){var semana = 3}
+    else if (numero>21 && numero<=28){var semana = 4}
+    else if (numero>28){var semana = 5}
+
+
+// Declaracion de una variable global Para que cambie cada vez que se ejecute el programa
+
+// La idea es que cada vez que se ejecute el programa la variable si estaba en true se ponga en false para que la siguiente semana no toque tarea quincenal
+
+if (typeof(context.flow.variable)!=='boolean'){
+    delete context.flow.variable
+}
+if (context.flow.variable === undefined) /*context.flow declara variable como global*/ {
+    context.flow.variable = true;
+}
+else if (context.flow.variable==true){
+context.flow.variable=false
+}
+else if (context.flow.variable==false){
+context.flow.variable=true}
+
+msg.variable = context.flow.variable;
+msg.mes=mes;
+
 
 ///////////////////////////Asignación Tareas/////////////////////////
 
-// Asignacion Tareas Quincenales
-if(numero % 2 == 0 && ['Octubre','Enero','Marzo','Junio','Julio','Septiembre'].includes(meses[mes]) || numero % 2 !== 0 && ['Febrero','Abril','Mayo','Agosto'].includes(meses[mes]) ){
+   // Asignacion Tareas Quincenales
+// Comprobamos si tuvimos tareas la semana anterior.
+if(context.flow.variable){
     tareasQuincenales=todasTareasQuincenales;
-    if( numero<=15 && ['Febrero','Abril','Junio','Agosto','Octubre','Diciembre'].includes(meses[mes])){tareasBimensuales=todasTareasBimensuales}
 
 }
-// Asignacion Tareas primera Quincena
-else if(numero<=15 ){
-    // Aignación Resto tareas
-    if ( ['Febrero', 'Abril', 'Junio', 'Agosto', 'Octubre', 'Diciembre'].includes(meses[mes])) { tareasBimensuales = todasTareasBimensuales }
-    else{tareasBimensuales=[todasTareasBimensuales[1]]}
-    if ('Noviembre'==meses[mes]){
-        tareasSemestrales=[todasTareasSemestrales[0],todasTareasSemestrales[4]];
-        tareasAnuales= [todasTareasAnuales[2]]
-    }
-    if ('Diciembre'== meses[mes] ){
-        tareasSemestrales=[todasTareasSemestrales[2]]
-    }
-    if ('Enero'== meses[mes] ){
-        tareasSemestrales=[todasTareasSemestrales[3]]
-    }
-    if ('Abril'== meses[mes] ){
-        tareasSemestrales=[todasTareasSemestrales[0]]
-    if ('Marzo'== meses[mes] ){
-        tareasAnuales=[todasTareasAnuales[0]]
-    }
-    if ('Junio'== meses[mes] ){
-        tareasAnuales=[todasTareasAnuales[1]]
-        tareasSemestrales=[todasTareasSemestrales[2],todasTareasSemestrales[4]]
-    }
-    }
-    tareasMensuales=[todasTareasMensuales.slice(0,2),todasTareasMensuales[3]]}
 
-// Asignacion de tareas mensuales 2 Quincena
-else if(numero>15){
-    tareasMensuales=todasTareasMensuales[0]
-    if ('Abril'== meses[mes] ){
-        tareasSemestrales=[todasTareasSemestrales[1]]}
-    if ('Noviembre'==meses[mes]){
-        tareasSemestrales=[todasTareasSemestrales[1]]}   
+// Asignacion tareas por mes
+// Enero 
+if(mes === 'Enero'){
+    if(semana == 1){
+        tareasMensuales=['Lavar al Chucho'];
+        tareasBimensuales=['Limpiar Coche'];
+        tareasSemestrales=['Limpiar Suelos'];
+        tareasAnuales=['Revisión Arcón'];
+    }
+    if(semana == 2){
+        tareasMensuales=['Limpiar Suelos(Común)','Limpiar Escalera'];
+        tareasBimensuales=[];
+        tareasSemestrales=[];
+        tareasAnuales=['Revisión Arcón'];
+    }
+    if(semana == 3){
+        tareasMensuales=[];
+        tareasBimensuales=['Limpiar Coche'];
+        tareasSemestrales=['Ordenar Despensa','Ordenar Medicamentos'];
+        tareasAnuales=[];
+    }
+    if(semana == 4){
+        tareasMensuales=['Limpiar Horno'];
+        tareasBimensuales=[];
+        tareasSemestrales=[];
+        tareasAnuales=[];
+    }
 }
+
+// Febrero 
+if (mes === 'Febrero') {
+    if (semana == 1) { 
+        tareasMensuales=['Bañar a Chucho'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+    if (semana == 2) { 
+        tareasMensuales=['FregarSuelos(Comun)','Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+    if (semana == 3) { 
+        tareasMensuales=[];
+        tareasBimensuales = [];
+        tareasSemestrales = [ 'Limpieza Cocina a Fondo', ];
+        tareasAnuales = [];
+    }
+    if (semana == 4) {
+        tareasMensuales=['Limpiar Microondas','Limpiar Horno'];
+        tareasBimensuales = ['Limpiar Cristales'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+     }
+}
+
+// Marzo
+if (mes === 'Marzo') {
+    if (semana == 1) {
+        tareasMensuales=['Bañar a Chucho'];
+        tareasBimensuales = ['Limpiar Coche'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+    if (semana == 2) { 
+        tareasMensuales=['FregarSuelos(Comun)','Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+    if (semana == 3) {
+        tareasMensuales=[];
+        tareasBimensuales = [];
+        tareasSemestrales = ['Cortinas'];
+        tareasAnuales = [];
+     }
+    if (semana == 4) { 
+        tareasMensuales=['Limpiar Microondas','Limpiar Horno'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+}
+// Abril
+
+if (mes === 'Abril') {
+    if (semana == 1) {
+        tareasMensuales = [ 'Bañar a Chucho'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+     }
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+     }
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = ['Parrilla'];
+     }
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = ['Limpiar Cristales'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+     }
+}
+// Mayo 
+if (mes === 'Mayo') {
+    if (semana == 1) { 
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = ['Limpiar Coche'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+    if (semana == 2) { 
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+    if (semana == 3) { 
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = ['Ordenar Armarios'];
+        tareasAnuales = [];
+    }
+    if (semana == 4) { 
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+    }
+}
+
+// Junio 
+if (mes === 'Junio') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = ['Limpieza Paneles']; }
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = ['Limpiar Cristales'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+}
+
+// Julio
+if (mes === 'Julio') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = ['Limpiar Coche'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = [ 'Despensa'];
+        tareasAnuales = [];
+}
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+}
+// Agosto
+
+if (mes === 'Agosto') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = ['Cortinas'];
+        tareasAnuales = [];
+}
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = ['Limpiar Cristales'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+}
+
+// Septiembre 
+if (mes === 'Septiembre') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = ['Limpiar Coche'];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = [ 'Limpieza Cocina a Fondo'];
+        tareasAnuales = [];
+}
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+}
+
+// Octubre 
+if (mes === 'Octubre') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = ['Ordenar Armarios'];
+        tareasAnuales = []; }
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = ['Limpiar Cristales'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+}
+
+// Noviembre
+if (mes === 'Noviembre') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = ['Limpiar Coche'];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+    if (semana == 2) {
+        tareasMensuales = ['FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+}
+// Diciembre
+
+if (mes === 'Diciembre') {
+    if (semana == 1) {
+        tareasMensuales = ['Bañar a Chucho'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = []; }
+    if (semana == 2) {
+        tareasMensuales = [ 'FregarSuelos(Comun)', 'Limpiar escalera (Comun)'];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 3) {
+        tareasMensuales = [];
+        tareasBimensuales = [];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+    if (semana == 4) {
+        tareasMensuales = ['Limpiar Microondas', 'Limpiar Horno'];
+        tareasBimensuales = ['Limpiar Cristales'];
+        tareasSemestrales = [];
+        tareasAnuales = [];
+}
+}
+
+
+
+
 ////////////////////////////HTML CORREO//////////////////////////////
 
 // Construir el fragmento de HTML
 var html = "<html><head><title>Información de la Fecha</title></head><body>";
-html += "<p>Fecha: " + numero + " de " + meses[mes] + " (" + dias[dia] + ")</p>";
+html += "<p>Fecha: " + numero + " de " + mes + " (" + dia + ")</p>";
 html += "<p> Buenos días Adrián, aquí tienes tus tareas:</p>"
 html += "<p>Tareas Semanales:</p>";
 html += "<ul>";
@@ -132,3 +462,5 @@ html += "</body></html>";
 msg.payload = html;
 
 return msg;
+
+
